@@ -1,40 +1,25 @@
-import pymunk as pm
-from pymunk import Vec2d
-
+import pygame
 
 class Bird():
-    def __init__(self, distance, angle, x, y, space):
+    def __init__(self, x, y, assets):
         self.life = 20
-        mass = 5
-        radius = 12
-        inertia = pm.moment_for_circle(mass, 0, radius, (0, 0))
-        body = pm.Body(mass, inertia)
-        body.position = x, y
-        power = distance * 53
-        impulse = power * Vec2d(1, 0)
-        angle = -angle
-        body.apply_impulse_at_local_point(impulse.rotated(angle))
-        shape = pm.Circle(body, radius, (0, 0))
-        shape.elasticity = 0.95
-        shape.friction = 1
-        shape.collision_type = 0
-        space.add(body, shape)
-        self.body = body
-        self.shape = shape
+        self.pos = pygame.Vector2(x, y)
+        self.origin = pygame.Vector2(x, y)
+        self.vel = pygame.Vector2(0, 0)
+        self.is_flying = False
+        self.is_dragged = False
+        self.radius = 12
+        self.image = assets.get('bird')
 
+    def reset(self):
+        self.pos = pygame.Vector2(self.origin.x, self.origin.y)
+        self.vel = pygame.Vector2(0, 0)
+        self.is_flying = False
+        self.is_dragged = False
 
 class Pig():
-    def __init__(self, x, y, space):
+    def __init__(self, x, y, space=None): # Mantive 'space' para não quebrar o level.py
         self.life = 20
-        mass = 5
-        radius = 14
-        inertia = pm.moment_for_circle(mass, 0, radius, (0, 0))
-        body = pm.Body(mass, inertia)
-        body.position = x, y
-        shape = pm.Circle(body, radius, (0, 0))
-        shape.elasticity = 0.95
-        shape.friction = 1
-        shape.collision_type = 1
-        space.add(body, shape)
-        self.body = body
-        self.shape = shape
+        self.pos = pygame.Vector2(x, y)
+        self.active = True
+        self.radius = 14
