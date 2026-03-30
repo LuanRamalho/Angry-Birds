@@ -57,29 +57,41 @@ class Level():
             self.columns.append(Polygon(p, 20, 85, self.space))
 
     def build_0(self):
-        """level 0"""
-        pig1 = Pig(980, 100, self.space)
-        pig2 = Pig(985, 182, self.space)
-        self.pigs.append(pig1)
-        self.pigs.append(pig2)
-        p = (950, 80)
-        self.columns.append(Polygon(p, 20, 85, self.space))
-        p = (1010, 80)
-        self.columns.append(Polygon(p, 20, 85, self.space))
-        p = (980, 150)
-        self.beams.append(Polygon(p, 85, 20, self.space))
-        p = (950, 200)
-        self.columns.append(Polygon(p, 20, 85, self.space))
-        p = (1010, 200)
-        self.columns.append(Polygon(p, 20, 85, self.space))
-        p = (980, 240)
-        self.beams.append(Polygon(p, 85, 20, self.space))
-        self.number_of_birds = 4
-        if self.bool_space:
-            self.number_of_birds = 8
-        self.one_star = 30000
-        self.two_star = 40000
-        self.three_star = 60000
+        """Level 0: Estrutura aproximada e alinhada para simular equilíbrio"""
+        
+        # 1. Definimos a base de blocos (X=600 para ficar visível)
+        base_x = 600
+        base_y_solo = 0 # Nível da grama no sistema do level.py
+        altura_coluna = 85
+        espessura_viga = 20
+        
+        # Colunas de base
+        self.vertical_pile(base_x, base_y_solo, 1)
+        self.vertical_pile(base_x + 100, base_y_solo, 1)
+        
+        # Viga transversal que une as colunas
+        # Y da viga é a altura das colunas (85)
+        viga_y_1 = altura_coluna
+        self.horizontal_pile(base_x, viga_y_1, 1)
+
+        # 2. Posicionamos o primeiro porco EM CIMA da primeira viga
+        # Y do porco = Y da viga (85) + Espessura da Viga (20)
+        pig_y_viga_1 = viga_y_1 + espessura_viga
+        self.pigs.append(Pig(base_x + 35, pig_y_viga_1)) # Centralizado entre colunas
+
+        # 3. Criamos o segundo andar de blocos
+        # Y de base do segundo andar é o topo da viga 1 (105)
+        base_y_andar2 = pig_y_viga_1
+        self.vertical_pile(base_x, base_y_andar2, 1)
+        self.vertical_pile(base_x + 100, base_y_andar2, 1)
+        
+        # Viga transversal do segundo andar
+        viga_y_2 = base_y_andar2 + altura_coluna
+        self.horizontal_pile(base_x, viga_y_2, 1)
+        
+        # 4. Posicionamos o segundo porco EM CIMA da segunda viga
+        pig_y_viga_2 = viga_y_2 + espessura_viga
+        self.pigs.append(Pig(base_x + 35, pig_y_viga_2))
 
     def build_1(self):
         """level 1"""
